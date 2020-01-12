@@ -1,31 +1,60 @@
-version: '2'
+version: "3.7"
 services:
-  dbapi:
+  walletd:
+    container_name: walletd
+    image: factominc/factom-walletd:latest
+    depends_on:
+      - factomd
+    expose:
+      - "8089"
+    ports:
+      - "8089:8089"
+    volumes: []
+    #- ./factom-data:/root/.factom/:rw
+    command: -s=factomd:8088
+    networks:
+      ptnet: {}
+  factomd:
+    container_name: factomd
+    image: factominc/factomd:latest
+    expose:
+      - "8088"
+      - "8110"
+      - "8090"
+      - "9876"
+    ports:
+      - "8088:8088"
+      - "8110:8110"
+      - "8090:8090"
+      - "9876:9876"
+    volumes: []
+    #- ./factom-data:/root/.factom/:rw
+    command: -network=LOCAL
+    networks:
+      ptnet: {}
+  pstack:
     image: stackdump/pstack-pgsql:latest
+    depends_on:
+      - factomd
+      - walletd
     build:
       context: .
       dockerfile: ./dbapi/Dockerfile
     hostname: dbapi
     ports:
-      - 5432:5432
+      - "5432:5432"
+    networks:
+      ptnet: {}
     environment:
       POSTGRES_USER: pstack
       POSTGRES_PASSWORD: pstack
       POSTGRES_DB: pstack
       PYTHONDEBUG: 1
-      FACTOMD_ENDPOINT: http://factomd:8088/v2
-  wsapi:
-    image: stackdump/pstack-wsapi:latest
-    build:
-      context: ./wsapi
-    hostname: wsapi
-    ports:
-      - 5000:5000
-    environment:
-      NODE_ENV: production
-      PGUSER: pstack
-      PGPASSWORD: pstack
-      PGHOST: dbapi
-      PGDATABASE: pstack
-    depends_on:
-      - dbapi
+      FACTOMD_ENDPOINT: http://factomd:8088
+
+networks:
+    ptnet:
+      ipam:
+        driver: default
+        config:
+          - subnet: 10.8.0.0/16

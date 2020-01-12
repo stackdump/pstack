@@ -32,3 +32,23 @@ PostgreSQL db lives at the core of this framework and it serves a few purposes:
   * Layers can be build on top - depending *only* on a PostgreSQL client library
   * Migration of data and code are scheduled strategically on block boundaries
 * With Postgraphile + plpython it provides an API abstraction
+
+
+## Developer Usage
+
+Open a postgres console
+
+```
+docker-compose exec pstack psql -U pstack
+```
+
+Use wallet to fund an EC address
+
+```
+./factom/test.sh buyec
+TxID: 1987e472253ca1ad796990207c8841296d3e82d8f48be135cbc499049f2e7165
+Status: TransactionACK
+./factom/test.sh  list
+FA2jK2HcLnRdS94dEcU27rF3meoJfpUcZPSinpb7AwQvPRY6RL1Q 19999.97988
+EC3Hu1W7uMHf7CtSva1cMyr5rXKsu7rVqQtkJCDHqEV9dgh5FjAj 2000
+```
