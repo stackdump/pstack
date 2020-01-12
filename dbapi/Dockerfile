@@ -1,4 +1,4 @@
-FROM postgres:12
+FROM postgres:11
 
 RUN apt-get update 
 RUN apt-get -y install git python3-dev python3-pip python3 postgresql-contrib-11 postgresql-plpython3-11
@@ -31,7 +31,7 @@ RUN echo 'CREATE EXTENSION plpython3u;' > 000_extension.sql
 # COPY dbapi/ddl/base/contracts.sql    004_contracts.sql
 
 # python functions
-# COPY dbapi/ddl/python/env.sql        101_env.sql
+COPY dbapi/ddl/python/env.sql        101_env.sql
 # COPY dbapi/ddl/python/ed25519.sql    102_ed25519.sql
 # COPY dbapi/ddl/python/proof.sql      103_proof.sql
 # COPY dbapi/ddl/python/harmony.sql    104_harmony.sql
