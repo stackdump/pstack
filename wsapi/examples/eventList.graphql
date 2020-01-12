@@ -1,0 +1,51 @@
+query {
+  all-Events(orderBy:NATURAL) {
+    edges {
+      node {
+        id
+        oid
+        action
+        mult
+        input
+        output
+      }
+    }
+  }
+}
+
+
+-- uses a custom query / calls postgres function
+{
+  ptnetevent(ptnet: "counter", oid: "deadbeef000000000000000000000000") {
+    nodes {
+      oid
+      action
+      mult
+      created
+      input
+      output
+    }
+  }
+}
+
+
+-- example of event creation
+mutation {
+  createEvent (
+    input: {
+      clientMutationId: "diff1233"
+      event: {
+          seq: "1111", # FIXME: should not allow user to set sequence counter
+          ptnet:"counter",
+          oid:"deadbeef000000000000000000000000",
+          action:"INC_0",
+          mult: "1"
+      
+      }
+    }
+  ) {
+    clientMutationId
+  }
+}
+    
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><document>
+    <id/>
+    <x/>
+    <y/>
+    <label/>
+    <subnet>
+        <id/>
+        <x>0</x>
+        <y>0</y>
+        <label/>
+        <place>
+            <id>6</id>
+            <x>-117</x>
+            <y>-68</y>
+            <label>TOKENS</label>
+            <tokens>0</tokens>
+            <isStatic>false</isStatic>
+        </place>
+        <transition>
+            <id>7</id>
+            <x>-234</x>
+            <y>-65</y>
+            <label>PTESTOID</label>
+        </transition>
+        <arc>
+            <type>regular</type>
+            <sourceId>7</sourceId>
+            <destinationId>6</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+    </subnet>
+    <roles/>
+</document>

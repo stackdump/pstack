@@ -1,0 +1,5 @@
+# NOTE: not using Pyfhel until we have good reason
+#-e git+https://github.com/stackdump/Pyfhel.git#egg=Pyfhel
+
+-e git+https://github.com/FactomProject/factom-api.git@master#egg=factom-api
+-e git+https://github.com/factomatic/py-factom-did.git@master#egg=py-factom-did
