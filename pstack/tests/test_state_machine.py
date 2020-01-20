@@ -19,22 +19,23 @@ class OctoeTestCase(unittest.TestCase):
         def x_fail(action):
             res = self.m(action, roles=['*'], payload={'foo': 'bar'})
             #print(action, res)
+            #print('EVT->', action, res)
             self.assertIsNotNone(res[2])
 
         def x_pass(action):
             res = self.m(action, roles=['*'])
-            # print(self.m.event(res[0]))
+            #print('EVT->', action, res)
             #print(action, res)
             # print(self.m.state())
             self.assertIsNone(res[2])
 
-        x_fail('OFF')
-        x_fail('EXEC')
-        x_pass('ON')
-        x_pass('EXEC')
+        x_fail('O11')
+        x_fail('O00')
         x_pass('X11')
-        x_fail('X01')
-        x_pass('O01')
+        x_fail('X10')
+        x_pass('O00')
+        x_pass('X12')
+        x_fail('X22')
 
 
 if __name__ == '__main__':

@@ -4,9 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-factom-sim = {editable = true,git = "git://github.com/stackdump/factom-sim.git",ref = "v0.1.2"}
 autopep8 = "*"
 
 [packages]
 factom-api = {editable = true,git = "git://github.com/FactomProject/factom-api.git",ref = "master"}
-py-factom-did = {editable = true,git = "git://github.com/factomatic/py-factom-did.git",ref = "master"}
+py-factom-did = {editable = true,git = "git://github.com/stackdump/py-factom-did.git",ref = "master"}
+web3 = "*"
+
+[requires]
+python_version = "3.5"

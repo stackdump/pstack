@@ -2,7 +2,6 @@ import time
 import unittest
 from pstack.storage import new_uuid
 from pstack.storage.factom import keyval as kv
-from factom_sim import Factomd, FactomWalletd
 
 
 # TODO: precompute chainid rather than just creating every time
@@ -11,15 +10,14 @@ SCHEMA = 'bar'
 
 BLKTIME = 15  # sec
 
+
 def wait_blocks(i):
+    print("Wait %s blocks (%s sec)" % (i, i*BLKTIME) )
     time.sleep(i * BLKTIME)
 
-fnode = Factomd()
-wallet = FactomWalletd()
 
 def setUpModule():
-    fnode.start()
-    wallet.start()
+    print("running fct integration test")
     wait_blocks(2)
     stor = kv.initialize(CHAIN, SCHEMA)
     stor.wait_for_chain()
@@ -27,7 +25,6 @@ def setUpModule():
 
 def tearDownModule():
     fnode.join()
-    wallet.join()
 
 
 # NOTE: currently this test is somewhat inconsistent

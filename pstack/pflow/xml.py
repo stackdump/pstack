@@ -178,9 +178,9 @@ class PFlowNet(PFlowParser):
             else:
                 assert False
 
-# REVIEW: consider relocating
 
-
+# internal state machine representation
+# used to create pstack.StateMachine classes
 class StateMachine(object):
 
     storage_provider = None

@@ -13,10 +13,12 @@ services:
     #- ./factom-data:/root/.factom/:rw
     command: -s=factomd:8088
     networks:
-      ptnet: {}
+      pnet: {}
   factomd:
     container_name: factomd
-    image: factominc/factomd:latest
+    image: factominc/factomd:FD-1112_a4_pre0
+    depends_on:
+      - shovel
     expose:
       - "8088"
       - "8110"
@@ -29,9 +31,25 @@ services:
       - "9876:9876"
     volumes: []
     #- ./factom-data:/root/.factom/:rw
-    command: -network=LOCAL
+    command: --blktime=15 --network=LOCAL --enablelivefeedapi --eventformat=json
     networks:
-      ptnet: {}
+      pnet: {}
+  shovel:
+    image: stackdump/pstack-shovel:latest
+    build:
+      context: .
+      dockerfile: ./factom-shovel/Dockerfile
+    hostname: shovel
+    ports:
+      - "8040:8040"
+    networks:
+      pnet: {}
+    environment:
+      POSTGRES_USER: pstack
+      POSTGRES_PASSWORD: pstack
+      POSTGRES_DB: pstack
+      PYTHONDEBUG: 1
+      FACTOMD_ENDPOINT: http://factomd:8088
   pstack:
     image: stackdump/pstack-pgsql:latest
     depends_on:
@@ -44,7 +62,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      ptnet: {}
+      pnet: {}
     environment:
       POSTGRES_USER: pstack
       POSTGRES_PASSWORD: pstack
@@ -53,7 +71,7 @@ services:
       FACTOMD_ENDPOINT: http://factomd:8088
 
 networks:
-    ptnet:
+    pnet:
       ipam:
         driver: default
         config:

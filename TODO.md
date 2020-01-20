@@ -1,18 +1,12 @@
 WIP
 ---
-
-- [ ] add Libs: https://github.com/factomatic/py-factom-did
-
-NOTE: have to port library to work w/ python 3.5
+working to improve factom chain init routines
+- [ ] improve chain intialization 
 
 BACKLOG
 -------
-- [ ] migrate pgsql storage from pstack into finite
 
-- [ ] swap out PNML/PFLOW
-      adapt: https://github.com/stackdump/ptflow
-      for this purpose
-
+- [ ] migrate pgsql storage to work from plpython
 - [ ] redesign to keep pflows only as python module rather than installing as tables
 
 DONE
@@ -20,6 +14,9 @@ DONE
 
 ICEBOX
 ------
+- [ ] finish forking for pythoon 3.5 - https://github.com/factomatic/py-factom-did
+- [ ] fix/Test Shovel to work with postgres
+- [ ] add haproxy to this deployment
 - [ ]: try out using postgraphile as an express app
 - [ ]: try out graphql subscriptions / websocket 
 
@@ -34,7 +31,10 @@ ICEBOX
 
 - [ ]: POC: build an exchange to allow FAT <-> PEG trading
 
+
 NOTES
 -----
 
 consider storing state machine data https://www.postgresql.org/docs/11/plpython-sharing.html
+
+Cloud Deployment: https://github.com/graphile/postgraphile-lambda-example

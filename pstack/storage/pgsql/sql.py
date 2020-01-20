@@ -11,6 +11,7 @@ STATE = sql.Identifier('states')
 _pool = None
 """ connection _pool """
 
+
 @contextmanager
 def cursor():
     """ cursor context helper """
@@ -21,32 +22,35 @@ def cursor():
         conn.commit()
     finally:
         _pool.putconn(conn)
-        #_pool.closeall()
+        # _pool.closeall()
+
 
 def _connect_crdb(**kwargs):
     """ create cockroachdb connection pool """
-    return ThreadedConnectionPool( 2, 20,
-        host=kwargs['pghost'],
-        user=kwargs['pgusername'],
-        dbname=kwargs['pgdatabase'],
-        #password=kwargs['pgpassword'],
-        port=26257,
-        sslmode='disable',
-    )
+    return ThreadedConnectionPool(2, 20,
+                                  host=kwargs['pghost'],
+                                  user=kwargs['pgusername'],
+                                  dbname=kwargs['pgdatabase'],
+                                  # password=kwargs['pgpassword'],
+                                  port=26257,
+                                  sslmode='disable',
+                                  )
 
     return db_pool
 
+
 def _connect_pgsql(**kwargs):
     """ create postgres connection pool """
-    return ThreadedConnectionPool( 2, 20,
-        host=kwargs['pghost'],
-        user=kwargs['pgusername'],
-        dbname=kwargs['pgdatabase'],
-        password=kwargs['pgpassword'],
-        port=5432,
-    )
+    return ThreadedConnectionPool(2, 20,
+                                  host=kwargs['pghost'],
+                                  user=kwargs['pgusername'],
+                                  dbname=kwargs['pgdatabase'],
+                                  password=kwargs['pgpassword'],
+                                  port=5432,
+                                  )
 
     return dbpool
+
 
 def reconnect(dbtype='crdb'):
     """ recreate db connection pool """
@@ -67,6 +71,7 @@ def reconnect(dbtype='crdb'):
         )
 
     return _pool
+
 
 _drop = sql.SQL("""
 DROP TABLE IF EXISTS {}
@@ -100,17 +105,17 @@ VALUES
 list_events = sql.SQL("""
 SELECT * FROM {}
 WHERE
-    id = %s 
+    id = %s
 AND
-    schema = %s 
+    schema = %s
 """).format(EVENT)
 
 get_event = sql.SQL("""
 SELECT * FROM {}
 WHERE
-    uuid = %s 
+    uuid = %s
 AND
-    schema = %s 
+    schema = %s
 """).format(EVENT)
 
 create_states = sql.SQL("""
@@ -132,15 +137,15 @@ VALUES (%s, %s, %s, %s, now())
 ON CONFLICT(id, schema) DO
     UPDATE SET state = %s, head = %s
 WHERE
-    excluded.schema = %s 
+    excluded.schema = %s
 AND
-    excluded.id = %s 
+    excluded.id = %s
 """).format(STATE)
 
 get_state = sql.SQL("""
 SELECT * FROM {}
 WHERE
-    id = %s 
+    id = %s
 AND
-    schema = %s 
+    schema = %s
 """).format(STATE)

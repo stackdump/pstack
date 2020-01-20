@@ -16,6 +16,7 @@ _CHAINID = '9fd62d9b1f00228c30134a7bae86dfcc48599ee2234a1015d5d200a5ab17187d'
 
 WAIT_TIME = 15
 
+
 def initialize(chain, schema):
     global __DB
     __DB = Blockchain(chain, schema)
@@ -111,20 +112,22 @@ class Blockchain(object):
         create chain if it doesn't exist
         wait until chainhead is found by the API
         """
+        print("wait for chain:")
         if not self.find_chain():
-            time.sleep(WAIT_TIME)
+            #time.sleep(WAIT_TIME)
             while not self.create_chain():
                 time.sleep(WAIT_TIME)
 
-            while not self.find_chain():
-                time.sleep(WAIT_TIME)
+            #while not self.find_chain():
+                #time.sleep(WAIT_TIME)
 
     def create_chain(self):
         try:
+            print("create chain:")
             # TODO: use hash of state machine as chain_content
             r = walletd.new_chain(
                 factomd,
-                [ b'pstack', _b( self.schema)],
+                [b'pstack', _b(self.schema)],
                 b'chain_content', ec_address=factomd.ec_address)
 
             assert 'chainid' in r
@@ -134,7 +137,6 @@ class Blockchain(object):
         except Exception as x:
             print("newchain FAIL:", x)
             return None
-    
 
     def __getitem__(self, key):
         return self.STOR[key]

@@ -1,8 +1,7 @@
 import time
 import unittest
-from finite.storage import new_uuid
-from finite.storage.factom import keyval as kv
-from factom_sim import Factomd, FactomWalletd
+from pstack.storage import new_uuid
+from pstack.storage.factom import keyval as kv
 
 CHAIN = 'foo'  # fiendly name for chain
 SCHEMA = 'bar'
@@ -10,22 +9,17 @@ OID = b'NTk0ZjBhZDctY2U0NS00NzhmLWIyN2ItODhhNDEzMGFjZGYy'
 BLKTIME = 15  # sec
 # toggle to run tests against external services
 
-fnode = Factomd()
-wallet = FactomWalletd()
 stor = None  # datastore
 
 
 def setUpModule():
-    fnode.start()
-    wallet.start()
     wait_blocks(2)
     stor = kv.initialize(CHAIN, SCHEMA)
     stor.wait_for_chain()
 
 
 def tearDownModule():
-    fnode.join()
-    wallet.join()
+    pass
 
 
 def wait_blocks(i):

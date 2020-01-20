@@ -34,11 +34,17 @@ class StateMachine(object):
 
     def initial_vector(self):
         """ bulid the default state """
-        return [p["initial"] for _, p in self.places.items()]
+        out = [0] * len(self.places)
+        for _, p in self.places.items():
+            out[p['offset']] = p['initial']
+        return out
 
     def capacity_vector(self):
         """ bulid the default state """
-        return [p["capacity"] for _, p in self.places.items()]
+        out = [0] * len(self.places)
+        for _, p in self.places.items():
+            out[p['offset']] = p['capacity']
+        return out
 
     def transform(self, state, action, multiple=1):
         """ perform state transformation with vector addition """
@@ -54,7 +60,7 @@ class StateMachine(object):
         for label, guard in t['guards'].items():
             self.guard_test(label, state, guard)
 
-        out = []
+        out = [0] * len(self.places)
         for p, attr in self.places.items():
             i = attr['offset']
             n = state[i] + t['delta'][i] * multiple
@@ -65,6 +71,6 @@ class StateMachine(object):
             if attr["capacity"] > 0 and n > attr["capacity"]:
                 raise InvalidOutput("overflow state[%i] %s => %i" % (i, p, n))
 
-            out.append(n)
+            out[i] = n
 
         return out, t['role']

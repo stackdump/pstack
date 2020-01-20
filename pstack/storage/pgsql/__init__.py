@@ -4,8 +4,10 @@ import uuid
 from ptflow.storage.pgsql import sql
 from contextlib import contextmanager
 
+
 class RoleFail(Exception):
     pass
+
 
 SUPERUSER = '*'
 """ role used to bypass all permission checks """
@@ -15,6 +17,7 @@ ROOT_UUID = '00000000-0000-0000-0000-000000000000'
 
 DEFAULT_SCHEMA = 'base'
 """ event schema to use if not provided """
+
 
 class Storage(object):
 
@@ -106,18 +109,21 @@ class Storage(object):
                     current_state = previous[2]
                     parent = previous[3]
 
-                new_state, role = self.transform(current_state, action, multiple)
+                new_state, role = self.transform(
+                    current_state, action, multiple)
 
                 if role not in kwargs['roles'] and SUPERUSER not in kwargs['roles']:
                     raise RoleFail("Missing Required Role: " + role)
 
                 cur.execute(sql.set_state,
-                    (self.oid, self.schema, new_state, event_id, new_state, event_id, self.schema, self.oid)
-                )
+                            (self.oid, self.schema, new_state, event_id,
+                             new_state, event_id, self.schema, self.oid)
+                            )
 
                 cur.execute(sql.append_event,
-                    (event_id, self.oid, self.schema, action, multiple, payload, new_state, parent)
-                )
+                            (event_id, self.oid, self.schema, action,
+                             multiple, payload, new_state, parent)
+                            )
 
         except Exception as x:
             err = x

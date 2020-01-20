@@ -33,7 +33,7 @@ print(json.dumps(compacted, indent=2))
 # FIXME this pulls /doc from nginx - what needs to be there?
 jsonld.compact('http://nginx/doc', 'http://nginx/context')
 
-sys.exit() # KLUDGE: Try out all other types
+sys.exit()  # KLUDGE: Try out all other types
 # expand a document, removing its context
 # see: http://json-ld.org/spec/latest/json-ld/#expanded-document-form
 expanded = jsonld.expand(compacted)

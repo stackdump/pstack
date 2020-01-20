@@ -7,15 +7,16 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirements = f.read().splitlines()
 
 DESC = """
-plpython wrapper package for harmony api client
+Listen for json encoded messages from Factomd
+and push into the DB
 """
 
 setup(
-    name="dbapi",
+    name="factom-shovel",
     version="0.1.0",
-    author="Matthew York",
-    author_email="myork@stackdump.com",
-    description="plpython adapter PegNet/Python",
+    author="",
+    author_email="",
+    description="",
     license='MIT',
     keywords='',
     packages=find_packages(),

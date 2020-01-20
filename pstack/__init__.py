@@ -16,12 +16,17 @@ def initialize(provider, **kwargs):
     if 'dirname' not in kwargs:
         kwargs['dirname'] = os.environ.get(
             'PTFLOW_DIR',
-            os.path.dirname(os.path.abspath(__file__)) + "/examples/"
+            os.path.abspath(
+                os.path.dirname(
+                    os.path.abspath(__file__)) +
+                "/../pflow")  # default to included pflow files
         )
+        #print('DIR ->', kwargs['dirname'])
 
-    for pf in glob.glob(kwargs['dirname'] + "*.pflow"):
+    for pf in glob.glob(kwargs['dirname'] + "/*.pflow"):
         es, _ = pflow_loader.load_file(pf)
         # load definition as a python class
+        # print(es.to_source())
         EVENTSTORE[es.name] = es.to_module().Machine
 
 
