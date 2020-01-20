@@ -3,6 +3,3 @@
 
 -e git+https://github.com/FactomProject/factom-api.git@master#egg=factom-api
 -e git+https://github.com/stackdump/py-factom-did.git@66344e070899ea48d365f8f56561d055e8a21d6a#egg=py-factom-did
-
-# to run tasks outside of container
-honcho

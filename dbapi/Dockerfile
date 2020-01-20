@@ -15,36 +15,36 @@ COPY requirements.txt ./requirements.txt
 RUN pip3 install cython>=0.25.1 numpy>=1.14.0 python-baseconv>=1.2.1
 RUN pip3 install -r ./requirements.txt
 
+
+# install pstack
+COPY . .
+RUN pip3 install -e .
+
+# install database functions
 COPY dbapi ./dbapi
 RUN pip3 install -e ./dbapi
 
-# install python db extension
+
 ENV PYTHON_PATH /usr/local/lib/python3.5/dist-packages
 
 WORKDIR /docker-entrypoint-initdb.d
+
+# install python db extension
 RUN echo 'CREATE EXTENSION plpython3u;' > 000_extension.sql
 
-# base state machine tables and functions
-# COPY dbapi/ddl/base/ptnet.sql        001_ptnet.sql
-# COPY dbapi/ddl/base/pnml.sql         002_pnml.sql
-# COPY dbapi/ddl/base/vectors.sql      003_vectors.sql
-# COPY dbapi/ddl/base/contracts.sql    004_contracts.sql
-
 # python functions
-COPY dbapi/ddl/python/env.sql        101_env.sql
-# COPY dbapi/ddl/python/ed25519.sql    102_ed25519.sql
-# COPY dbapi/ddl/python/proof.sql      103_proof.sql
-# COPY dbapi/ddl/python/harmony.sql    104_harmony.sql
-# COPY dbapi/ddl/python/encoding.sql   105_encoding.sql
+COPY dbapi/ddl/python/env.sql          101_env.sql
+COPY dbapi/ddl/python/statemachine.sql 102_statemachine.sql
+#COPY dbapi/ddl/python/ed25519.sql      103_ed25519.sql
+#COPY dbapi/ddl/python/proof.sql        104_proof.sql
+#COPY dbapi/ddl/python/harmony.sql      105_harmony.sql
+#COPY dbapi/ddl/python/encoding.sql     106_encoding.sql
 
 # schemata definitions
 # COPY dbapi/ddl/counter/schema.sql    200_counter_schema.sql
 # COPY dbapi/ddl/auction/schema.sql    201_auction_schema.sql
 
 # generate test data
-# COPY dbapi/ddl/python/proof_test.sql 300_proof_test.sql
-# COPY dbapi/ddl/counter/test.sql      301_counter_test.sql
-# COPY dbapi/ddl/auction/test.sql      302_auction_test.sql
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 

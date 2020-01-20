@@ -2,10 +2,6 @@ from setuptools import setup, find_packages
 from os import path
 from codecs import open
 
-here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
-    requirements = f.read().splitlines()
-
 setup(
     name="pstack",
     version="0.1.0",
@@ -16,7 +12,7 @@ setup(
     keywords='pflow pnml petri-net petri petrinet statemachine statevector eventstore Factom PegNet',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=requirements,
+    install_requires=["factom-api", "py-factom-did"],
     long_description="""
     """,
     url="",

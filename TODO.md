@@ -1,11 +1,13 @@
 WIP
 ---
 working to improve factom chain init routines
-- [ ] improve chain intialization 
+
+- [ ] try caching state machine def in local storage
 
 BACKLOG
 -------
 
+- [ ] improve chain intialization 
 - [ ] migrate pgsql storage to work from plpython
 - [ ] redesign to keep pflows only as python module rather than installing as tables
 
