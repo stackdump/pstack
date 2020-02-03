@@ -1,7 +1,7 @@
 import os
 import json
 import uuid
-from ptflow.storage.pgsql import sql
+from pstack.storage.pgsql import sql
 from contextlib import contextmanager
 
 
@@ -21,7 +21,7 @@ DEFAULT_SCHEMA = 'base'
 
 class Storage(object):
 
-    SOURCE_HEADER = "from ptflow.storage.pgsql import Storage"
+    SOURCE_HEADER = "from pstack.storage.pgsql import Storage"
     """ import line used to include this class in generated code """
 
     EVENT = sql.EVENT

@@ -110,3 +110,4 @@ postgres-data
 .vscode
 out.txt
 *.code-workspace
+*.swp

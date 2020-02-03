@@ -35,14 +35,7 @@ RUN echo 'CREATE EXTENSION plpython3u;' > 000_extension.sql
 # python functions
 COPY dbapi/ddl/python/env.sql          101_env.sql
 COPY dbapi/ddl/python/statemachine.sql 102_statemachine.sql
-#COPY dbapi/ddl/python/ed25519.sql      103_ed25519.sql
-#COPY dbapi/ddl/python/proof.sql        104_proof.sql
-#COPY dbapi/ddl/python/harmony.sql      105_harmony.sql
-#COPY dbapi/ddl/python/encoding.sql     106_encoding.sql
-
-# schemata definitions
-# COPY dbapi/ddl/counter/schema.sql    200_counter_schema.sql
-# COPY dbapi/ddl/auction/schema.sql    201_auction_schema.sql
+COPY dbapi/ddl/tables/eventstore.sql   103_eventstore.sql
 
 # generate test data
 

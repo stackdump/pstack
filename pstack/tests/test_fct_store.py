@@ -12,14 +12,14 @@ BLKTIME = 15  # sec
 stor = None  # datastore
 
 
-def setUpModule():
-    wait_blocks(2)
-    stor = kv.initialize(CHAIN, SCHEMA)
-    stor.wait_for_chain()
-
-
-def tearDownModule():
-    pass
+#def setUpModule():
+#    wait_blocks(2)
+#    stor = kv.initialize(CHAIN, SCHEMA)
+#    stor.wait_for_chain()
+#
+#
+#def tearDownModule():
+#    pass
 
 
 def wait_blocks(i):
@@ -29,10 +29,7 @@ def wait_blocks(i):
 class TestFactomStorage(unittest.TestCase):
 
     def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+        self.skipTest("Skipping integration test")
 
     def test_events(self):
         """ test get/set event """

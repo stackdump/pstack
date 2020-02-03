@@ -1,23 +1,22 @@
 WIP
 ---
-working to improve factom chain init routines
-
-- [ ] try caching state machine def in local storage
+- [ ] improve chain intialization 
+- [ ] migrate pgsql storage to work from plpython
+- [ ] fix/Test Shovel to work with postgres
 
 BACKLOG
 -------
-
-- [ ] improve chain intialization 
-- [ ] migrate pgsql storage to work from plpython
-- [ ] redesign to keep pflows only as python module rather than installing as tables
+- [ ] build new wsapi on top of DB - will be enduser facing
+- [ ] integrate pegnet protocol
+- [ ] finish forking DID/VC operations for pythoon 3.5 - https://github.com/factomatic/py-factom-did
 
 DONE
 ----
+- [x] redesign to keep pflows only as python module rather than installing as tables
 
 ICEBOX
 ------
-- [ ] finish forking for pythoon 3.5 - https://github.com/factomatic/py-factom-did
-- [ ] fix/Test Shovel to work with postgres
+- [ ] try caching state machine def in local storage
 - [ ] add haproxy to this deployment
 - [ ]: try out using postgraphile as an express app
 - [ ]: try out graphql subscriptions / websocket 

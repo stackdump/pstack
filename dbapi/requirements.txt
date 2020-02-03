@@ -1,12 +1,6 @@
-harmony_connect_client
 factom_api
 
 ed25519
 #cython>=0.25.1
 #numpy>=1.14.0
 #python-baseconv
-factom-api
-
-# previoully installed directly from git
-# harmony_connect_client
-# factom_sdk

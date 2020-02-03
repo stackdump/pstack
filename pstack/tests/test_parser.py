@@ -9,7 +9,7 @@ class OctoeTestCase(unittest.TestCase):
     def setUp(self):
         pstack.pflow.set_provider(Storage)
         self.xmlfile = os.path.dirname(os.path.abspath(__file__)
-                                       ) + "/../examples/octoe.pflow"
+                                       ) + "/../../pflow/octoe.pflow"
 
     def tearDown(self):
         pass

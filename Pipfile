@@ -10,6 +10,4 @@ autopep8 = "*"
 factom-api = {editable = true,git = "git://github.com/FactomProject/factom-api.git",ref = "master"}
 py-factom-did = {editable = true,git = "git://github.com/stackdump/py-factom-did.git",ref = "master"}
 web3 = "*"
-
-[requires]
-python_version = "3.5"
+autopep8 = "*"
