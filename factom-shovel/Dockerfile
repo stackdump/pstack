@@ -9,4 +9,5 @@ RUN pip3 install -e ./factom-shovel
 ENTRYPOINT ["/usr/bin/python3"]
 
 EXPOSE 8040
-CMD ["/opt/factom-shovel/shovel.py"]
+#CMD ["/opt/factom-shovel/shovel.py"]
+CMD ["bash"]

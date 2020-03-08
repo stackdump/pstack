@@ -16,7 +16,7 @@ services:
       pnet: {}
   factomd:
     container_name: factomd
-    image: factominc/factomd:FD-1112_a4_pre0
+    image: factominc/factomd:v6.6.0
     depends_on:
       - shovel
     expose:
@@ -69,19 +69,19 @@ services:
       POSTGRES_DB: pstack
       PYTHONDEBUG: 1
       FACTOMD_ENDPOINT: http://factomd:8088
-  haproxy:
-    container_name: haproxy
-    image: stackdump/pstack-haproxy:latest
-    depends_on:
-      - pstack
-    build:
-      context: .
-      dockerfile: ./haproxy/Dockerfile
-    ports:
-      - "8000:8000"
-    volumes: []
-    networks:
-      pnet: {}
+#  haproxy:
+#    container_name: haproxy
+#    image: stackdump/pstack-haproxy:latest
+#    depends_on:
+#      - pstack
+#    build:
+#      context: .
+#      dockerfile: ./haproxy/Dockerfile
+#    ports:
+#      - "8000:8000"
+#    volumes: []
+#    networks:
+#      pnet: {}
 
 networks:
     pnet:

@@ -97,7 +97,7 @@ def shovel(data: bytes):
         return
 
     # TODO: figure out how to route data ? do we filter by chain?
-    process(task_type, payload)
+    process(task_type, event_data)
 
 
 def process(task_type: str, payload: dict):
