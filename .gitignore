@@ -1,0 +1,5 @@
+.idea
+factomd*
+factom-walletd
+*.swp
+*.txt

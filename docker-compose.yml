@@ -1,0 +1,122 @@
+version: "3.7"
+services:
+  factomd:
+    container_name: factomd
+    image: factominc/factomd:v6.6.0
+    expose:
+      - "8088"
+      - "8110"
+      - "8090"
+      - "9876"
+    ports:
+      - "8088:8088"
+      - "8110:8110"
+      - "8090:8090"
+      - "9876:9876"
+    volumes:
+      - ~/mainnet/.factom:/root/.factom/:rw
+    command: -sim_stdin=false -nodename=FNode0 -customnet=net -network=CUSTOM -blktime=15 -logstash -logurl=logstash:8345
+    restart: unless-stopped
+    logging: &Logging
+      options:
+        max-size: "500k"
+        max-file: "10"
+    networks:
+      pnet: {}
+  walletd:
+    container_name: walletd
+    image: factominc/factom-walletd:latest
+    depends_on:
+      - factomd
+    expose:
+      - "8089"
+    ports:
+      - "8089:8089"
+    logging: *Logging
+    command: -s=factomd:8088
+    restart: unless-stopped
+    networks:
+      pnet: {}
+  pegnetd:
+    container_name: pegnetd
+    image: factominc/pegnetd:develop
+    #volumes:
+       #- ./config/pegnetd.toml:/go/src/github.com/pegnet/pegnetd/pegnetd-conf.toml:ro
+       #- ./volumes/pegnetd:/root/.pegnetd
+       #- ./volumes/pegnet:/root/.lxrhash
+    depends_on:
+        - factomd
+        - walletd
+    expose:
+        # Wallet API
+        - 8070
+    restart: unless-stopped
+    entrypoint: pegnetd
+    logging: *Logging
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: elasticsearch/
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    expose:
+      - "9200"
+      - "9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      pnet: {}
+  logstash:
+    container_name: logstash
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    expose:
+      - "5000"
+      - "9600"
+      - "8345"
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+      - "8345:8345"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      pnet: {}
+    depends_on:
+        - elasticsearch
+  kibana:
+    container_name: kibana
+    build:
+      context: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      pnet: {}
+    depends_on:
+      - elasticsearch
+  prometheus:
+    container_name: prometheus
+    build:
+      context: prometheus/
+    volumes:
+      - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      pnet: {}
+    depends_on:
+      - factomd
+
+networks:
+    pnet:
+      ipam:
+        driver: default
+        config:
+          - subnet: 10.9.0.0/16
