@@ -10,4 +10,4 @@ COPY entry.py .
 ENTRYPOINT ["/usr/bin/python3"]
 
 EXPOSE 8040
-CMD ["python", "entry.py"]
+CMD ["entry.py"]

@@ -1,8 +1,21 @@
 version: "3.7"
 services:
+  shovel:
+    container_name: shovel
+    build:
+      context: shovel/
+    ports:
+      - "8040:8040"
+    logging: &Logging
+      options:
+        max-size: "500k"
+        max-file: "10"
+    networks:
+      pnet: {}
   factomd:
     container_name: factomd
     image: factominc/factomd:v6.6.0
+    #image: factomproject/factomd:dev
     expose:
       - "8088"
       - "8110"
@@ -17,16 +30,13 @@ services:
       - ~/mainnet/.factom:/root/.factom/:rw
     command: -sim_stdin=false -nodename=FNode0 -customnet=net -network=CUSTOM -blktime=15 -logstash -logurl=logstash:8345
     restart: unless-stopped
-    logging: &Logging
-      options:
-        max-size: "500k"
-        max-file: "10"
     networks:
       pnet: {}
   walletd:
     container_name: walletd
     image: factominc/factom-walletd:latest
     depends_on:
+      - shovel
       - factomd
     expose:
       - "8089"

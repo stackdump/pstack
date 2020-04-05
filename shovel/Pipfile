@@ -1,0 +1,12 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+factom-shovel = {editable = true,git = "https://github.com/stackdump/factom-shovel.git",ref = "master"}
+
+[requires]
+python_version = "3.7"
