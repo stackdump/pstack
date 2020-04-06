@@ -18,6 +18,10 @@ services:
       - ~/mainnet/.factom:/root/.factom/:rw
     command: -sim_stdin=false -nodename=FNode0 -customnet=net -network=CUSTOM -blktime=15 -logstash -logurl=logstash:8345
     restart: unless-stopped
+    logging: &Logging
+      options:
+        max-size: "500k"
+        max-file: "10"
     networks:
       pnet: {}
   walletd:
@@ -110,6 +114,25 @@ services:
       pnet: {}
     depends_on:
       - factomd
+  database:
+    image: stackdump/pstack-pgsql:latest
+    depends_on:
+      - factomd
+      - walletd
+    build:
+      context: .
+      dockerfile: ./postgres/Dockerfile
+    hostname: database
+    ports:
+      - "5432:5432"
+    networks:
+      pnet: {}
+    environment:
+      POSTGRES_USER: pstack
+      POSTGRES_PASSWORD: pstack
+      POSTGRES_DB: pstack
+      PYTHONDEBUG: 1
+      FACTOMD_ENDPOINT: http://factomd:8088
 
 networks:
     pnet:
