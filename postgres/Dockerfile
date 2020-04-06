@@ -9,12 +9,12 @@ rm -rf /var/cache/apt/* /var/lib/apt/lists/*
 # python package dependencies and db extension
 WORKDIR /opt
 
+# provide numpy by default
 RUN pip3 install cython>=0.25.1 numpy>=1.14.0 python-baseconv>=1.2.1
 
-# install database api and required python packages
+# install python packages
 COPY postgres/requirements.txt ./requirements.txt
 RUN pip3 install -r ./requirements.txt
-
 
 WORKDIR /docker-entrypoint-initdb.d
 
@@ -23,6 +23,10 @@ RUN echo 'CREATE EXTENSION plpython3u;' > 000_extension.sql
 
 # install stored python functions
 COPY postgres/ddl/python/env.sql          101_env.sql
+COPY postgres/ddl/python/ed25519.sql      102_ed25519.sql
+
+# install tables
+COPY postgres/ddl/tables/logstash.sql     103_logstash.sql
 
 ENV PYTHON_PATH /usr/local/lib/python3.5/dist-packages
 

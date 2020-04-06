@@ -22,6 +22,8 @@ services:
       options:
         max-size: "500k"
         max-file: "10"
+    environment:
+      EVENTLOG: "true"
     networks:
       pnet: {}
   walletd:
@@ -63,6 +65,7 @@ services:
     expose:
       - "9200"
       - "9300"
+    restart: unless-stopped
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
@@ -71,6 +74,7 @@ services:
     container_name: logstash
     build:
       context: logstash/
+    restart: unless-stopped
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
@@ -92,6 +96,7 @@ services:
     container_name: kibana
     build:
       context: kibana/
+    restart: unless-stopped
     volumes:
       - ./kibana/config/:/usr/share/kibana/config:ro
     ports:
@@ -104,6 +109,7 @@ services:
     container_name: prometheus
     build:
       context: prometheus/
+    restart: unless-stopped
     volumes:
       - ./prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
@@ -122,6 +128,7 @@ services:
     build:
       context: .
       dockerfile: ./postgres/Dockerfile
+    restart: unless-stopped
     hostname: database
     ports:
       - "5432:5432"
@@ -133,6 +140,24 @@ services:
       POSTGRES_DB: pstack
       PYTHONDEBUG: 1
       FACTOMD_ENDPOINT: http://factomd:8088
+  wsapi:
+    image: stackdump/pstack-wsapi:latest
+    build:
+      context: ./postgraphile
+    restart: unless-stopped
+    hostname: wsapi
+    ports:
+      - "8080:5000"
+    networks:
+      pnet: {}
+    environment:
+      NODE_ENV: production
+      PGUSER: pstack
+      PGPASSWORD: pstack
+      PGHOST: database
+      PGDATABASE: pstack
+    depends_on:
+      - database
 
 networks:
     pnet:

@@ -28,5 +28,5 @@ AS $$
 $$ LANGUAGE plpython3u STABLE;
 
 -- TODO: actually make this work
---SELECT verify(k.verify, sign(k.sign, '{ "foo": "bar"}')) FROM generate_key() as k;
+SELECT verify(k.verify, sign(k.sign, '{ "foo": "bar"}')) FROM generate_key() as k;
 
