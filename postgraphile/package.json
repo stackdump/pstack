@@ -10,8 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "postgraphile": "^4.2.0",
+    "postgraphile": "^4.7.0",
     "vc-test-suite": "git+https://github.com/w3c/vc-test-suite.git",
-    "web3": "^1.2.5-rc.0"
+    "web3": "^1.2.7"
   }
 }

@@ -3,7 +3,7 @@ services:
   factomd:
     container_name: factomd
     #image: factominc/factomd:v6.6.0
-    image: factomproject/factomd:dev
+    image: factomproject/factomd:eventlog
     expose:
       - "8088"
       - "8110"
@@ -16,7 +16,7 @@ services:
       - "9876:9876"
     volumes:
       - ~/mainnet/.factom:/root/.factom/:rw
-    command: -sim_stdin=false -nodename=FNode0 -customnet=net -network=CUSTOM -blktime=15 -logstash -logurl=logstash:8345
+    command: -sim_stdin=false -nodename=FNode0 -logurl=logstash:8345 -enablelivefeedapi -eventformat=json
     restart: unless-stopped
     logging: &Logging
       options:
@@ -147,7 +147,7 @@ services:
     restart: unless-stopped
     hostname: wsapi
     ports:
-      - "8080:5000"
+      - "8050:5000"
     networks:
       pnet: {}
     environment:
@@ -158,6 +158,21 @@ services:
       PGDATABASE: pstack
     depends_on:
       - database
+  haproxy:
+    image: stackdump/pstack-haproxy:latest
+    build:
+      context: ./haproxy
+    restart: unless-stopped
+    hostname: wsapi
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      pnet: {}
+    depends_on:
+      - database
+      - factomd
+      - wsapi
 
 networks:
     pnet:

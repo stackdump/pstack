@@ -1,0 +1,76 @@
+@startuml
+
+actor mobile
+collections www
+boundary endpoint
+boundary haproxy
+entity ipfs
+entity postgraphile
+entity factomd as "CITY Custom Net"
+boundary logstash
+control dApp
+database postgres
+database elastic
+collections prometheus
+collections kibana
+
+group webUI
+  mobile -> www : sign & send events
+  note right mobile
+  browser ext or mobile wallet
+  end note
+  www -> endpoint : HTTPS gateway & peer tcp/4001
+  endpoint -> ipfs : /ipfs/{CID}
+  activate ipfs
+  endpoint -> haproxy : HTTPS (oauth by EC Address)
+  note right www
+  User makes deposit / signs entry to trigger events.
+  end note
+end
+
+group api - Admin/Write api
+  haproxy -> factomd : /v2 - read/write factom api
+  activate factomd
+  haproxy -> ipfs : /ipfs/{CID} - readonly gateway
+  haproxy -> postgraphile : /graphql - readonly graphql queries
+  activate postgraphile
+  factomd -> logstash : livefeed log
+  activate logstash
+  logstash -> elastic : index event logs
+  activate elastic
+  logstash -> postgres : dApp specific events
+  activate postgres
+  postgraphile -> postgres : Query/Sign
+  deactivate postgraphile
+  postgres -> dApp : sign and dispatch requests
+  activate dApp
+  dApp -> factomd : read/write signed factom entries
+end
+
+group dashboard
+  kibana -> elastic : dashboard query
+  deactivate elastic
+  activate kibana
+  prometheus -> prometheus : poll()
+  activate prometheus
+  prometheus -> factomd : Monitor(FA2XXXXXXXXX) Balance changes
+  prometheus -> factomd : HTTP GET /metrics
+  deactivate factomd
+  prometheus -> ipfs : HTTP GET /metrics
+  kibana -> prometheus : metrics  query
+  kibana -> postgres : dApp specific rollup
+  deactivate kibana
+  deactivate prometheus
+end
+
+group dApp - controller
+  postgres -> dApp : dispatch on-chain event
+  deactivate postgres
+  dApp -> logstash : dApp specific logging
+  deactivate logstash
+  dApp -> ipfs : pin entry content on IPFS
+  deactivate dApp
+  deactivate ipfs
+end
+
+@enduml
