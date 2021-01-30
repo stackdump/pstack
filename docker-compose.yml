@@ -1,0 +1,22 @@
+
+version: "3.7"
+services:
+  database:
+    image: stackdump/pstack-pgsql:latest
+    build:
+      context: .
+      dockerfile: ./postgres/Dockerfile
+    restart: unless-stopped
+    hostname: database
+    network_mode: host
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pstack
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: pstack
+      PYTHONDEBUG: 1
+      FACTOMD_ENDPOINT: http://127.0.0.1:8088
+      PEGNETD_ENDPOINT: http://127.0.0.1:8070
+      IPFS_PROXY: http://127.0.0.1:8080
+      IPFS_ENDPOINT: http://127.0.0.1:5001

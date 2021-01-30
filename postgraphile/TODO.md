@@ -1,0 +1,1 @@
+install @graphile/subscriptions-lds

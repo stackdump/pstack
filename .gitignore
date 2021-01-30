@@ -1,0 +1,9 @@
+.idea
+factomd*
+factom-walletd
+*.swp
+<<<<<<< Updated upstream
+*.txt
+=======
+.idea
+>>>>>>> Stashed changes

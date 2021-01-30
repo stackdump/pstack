@@ -1,0 +1,17 @@
+{
+  "name": "pstack-postgraphile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "postgraphile -c postgres://database:5432/pstack --cors -s public -a -j -r pstack -n 0.0.0.0"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "postgraphile": "^4.7.0",
+    "vc-test-suite": "git+https://github.com/w3c/vc-test-suite.git",
+    "web3": "^1.2.7"
+  }
+}
