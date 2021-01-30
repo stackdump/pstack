@@ -1,5 +1,5 @@
 -- dump env vars
-CREATE OR REPLACE FUNCTION get_rates_by_height(ht int) RETURNS json
+CREATE OR REPLACE FUNCTION get_rates_by_height(ht bigint) RETURNS json
 AS $$
     import pegnet_py
     import json
